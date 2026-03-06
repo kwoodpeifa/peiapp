@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title id="doc-title">Advance Payments Program — peiapp.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Nunito:wght@300;400;500;600;700&amp;family=Caveat:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sage: #5a7a5c; --sage-dark: #3d5640; --sage-light: #8aaa8c; --sage-pale: #dde8de;
+      --wheat: #c49a3c; --wheat-light: #e8c06a; --wheat-pale: #f5e9cc;
+      --soil: #7a5230; --cream: #faf6ef; --cream-dark: #f0e9da; --paper: #fffdf8;
+      --text: #2e2e26; --text-mid: #555548; --text-light: #8a8a7a; --border: #ddd8cc;
+      --rust: #a85c38; --rust-pale: #f7ece5; --rust-light: #c97a56;
+      --topbar: 108px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* PAGE ROUTING */
+    .page { display: none; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* FIXED NAV */
+    nav.main-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--paper); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 68px; box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .nav-mark { height: 44px; width: auto; flex-shrink: 0; display: block; }
+    .nav-text { font-size: 13px; color: var(--text-mid); line-height: 1.35; }
+    .nav-text strong { display: block; font-size: 13px; font-weight: 700; color: var(--sage-dark); }
+    .nav-links { display: flex; gap: 22px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-mid); text-decoration: none; font-size: 13.5px; font-weight: 600; transition: color 0.2s; cursor: pointer; }
+    .nav-links a:hover, .nav-links a.nav-active { color: var(--sage-dark); }
+    .nav-cta { background: var(--sage-dark) !important; color: var(--wheat-pale) !important; padding: 8px 18px !important; border-radius: 6px; }
+    .nav-cta:hover, .nav-cta.nav-active { background: var(--sage) !important; color: var(--wheat-pale) !important; }
+
+    /* PERSISTENT BANNER */
+    .site-banner { position: fixed; top: 68px; left: 0; right: 0; z-index: 99; background: var(--sage-dark); padding: 10px 40px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: rgba(255,253,248,0.8); flex-wrap: wrap; }
+    .banner-tag { background: var(--wheat); color: var(--text); font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* PAGE BODY OFFSET */
+    .page-body { padding-top: var(--topbar); }
+
+    /* BREADCRUMB */
+    .breadcrumb { padding: 10px 40px; background: var(--paper); border-bottom: 1px solid var(--border); border-left: 4px solid var(--wheat); font-size: 12.5px; color: var(--text-light); }
+    .breadcrumb a { color: var(--sage); text-decoration: none; cursor: pointer; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; opacity: 0.5; }
+
+    /* SHARED */
+    section { padding: 80px 0; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 40px; }
+    .eyebrow { font-family: 'Caveat', cursive; font-size: 20px; font-weight: 600; color: var(--rust); margin-bottom: 10px; }
+    h2 { font-family: 'Lora', serif; font-size: clamp(24px, 3vw, 38px); font-weight: 700; color: var(--sage-dark); line-height: 1.2; margin-bottom: 16px; }
+    .lead { font-size: 16px; line-height: 1.75; color: var(--text-mid); max-width: 520px; }
+    .warn { padding: 14px 18px; background: var(--wheat-pale); border-left: 3px solid var(--wheat); border-radius: 4px; font-size: 13.5px; color: var(--soil); line-height: 1.6; margin-top: 20px; }
+
+    /* BUTTONS */
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--sage-dark); color: var(--paper); padding: 13px 28px; border-radius: 8px; font-weight: 700; font-size: 15px; text-decoration: none; transition: all 0.2s; border: 2px solid var(--sage-dark); cursor: pointer; }
+    .btn-primary:hover { background: var(--sage); border-color: var(--sage); transform: translateY(-1px); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--sage-dark); padding: 13px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; text-decoration: none; border: 2px solid var(--border); transition: all 0.2s; cursor: pointer; }
+    .btn-outline:hover { border-color: var(--sage-light); background: var(--sage-pale); }
+    .btn-wheat { display: inline-flex; align-items: center; gap: 8px; background: var(--wheat); color: var(--text); padding: 12px 26px; border-radius: 8px; font-weight: 700; font-size: 15px; text-decoration: none; border: 2px solid var(--wheat); transition: all 0.2s; cursor: pointer; }
+    .btn-wheat:hover { background: var(--wheat-light); border-color: var(--wheat-light); }
+
+    /* HERO */
+    h1 { font-family: 'Lora', serif; font-size: clamp(32px, 4vw, 50px); font-weight: 700; line-height: 1.2; color: var(--sage-dark); margin-bottom: 20px; }
+    h1 em { font-style: italic; color: var(--rust); }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--wheat-pale); border: 1px solid var(--wheat-light); color: var(--soil); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; }
+    .hero-desc { font-size: 17px; line-height: 1.75; color: var(--text-mid); margin-bottom: 36px; max-width: 500px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .hero-inner { max-width: 1140px; margin: 0 auto; padding: 70px 40px 60px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 70px; align-items: center; }
+    .hero-aside { background: var(--paper); border: 1px solid var(--border); border-radius: 16px; padding: 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.05); }
+    .aside-label { font-family: 'Caveat', cursive; font-size: 18px; font-weight: 600; color: var(--sage); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .aside-label::before { content: ''; width: 20px; height: 2px; background: var(--wheat); border-radius: 2px; }
+    .stat-row { display: flex; flex-direction: column; gap: 12px; }
+    .stat-block { background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 10px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; }
+    .stat-block.hi { background: var(--sage-pale); border-color: var(--sage-light); }
+    .stat-block.amber { background: var(--wheat-pale); border-color: var(--wheat-light); }
+    .stat-block.earthy { background: var(--rust-pale); border-color: #ddb49a; }
+    .stat-num { font-family: 'Lora', serif; font-size: 24px; font-weight: 700; color: var(--sage-dark); white-space: nowrap; min-width: 90px; }
+    .stat-block.amber .stat-num { color: var(--soil); }
+    .stat-block.earthy .stat-num { color: var(--rust); }
+    .stat-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .stat-sub { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+    .aside-note { margin-top: 16px; padding: 12px 16px; background: var(--wheat-pale); border-left: 3px solid var(--wheat); border-radius: 4px; font-size: 13px; color: var(--soil); line-height: 1.5; }
+    .hero-nav-cards { max-width: 1140px; margin: 0 auto; padding: 0 40px 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .hn-card { background: var(--paper); border: 1px solid var(--border); border-radius: 12px; padding: 22px 20px; cursor: pointer; transition: all 0.2s; display: block; }
+    .hn-card:hover { border-color: var(--sage-light); box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-2px); }
+    .hn-icon { font-size: 24px; margin-bottom: 10px; }
+    .hn-title { font-family: 'Lora', serif; font-size: 15px; font-weight: 700; color: var(--sage-dark); margin-bottom: 4px; }
+    .hn-desc { font-size: 12.5px; color: var(--text-light); line-height: 1.5; }
+
+    /* ABOUT */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .about-body { margin-top: 20px; font-size: 15px; line-height: 1.8; color: var(--text-mid); }
+    .about-body p+p { margin-top: 14px; }
+    .feat { display: flex; gap: 14px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--cream-dark); }
+    .feat:last-child { border-bottom: none; }
+    .feat-icon { width: 32px; height: 32px; flex-shrink: 0; margin-top: 2px; color: var(--sage); }
+    .feat-icon svg { width: 100%; height: 100%; }
+    .feat-title { font-weight: 700; font-size: 14.5px; color: var(--text); margin-bottom: 3px; }
+    .feat-desc { font-size: 13.5px; color: var(--text-light); line-height: 1.6; }
+    .rule-bullet { color: var(--sage-light); font-weight: 700; flex-shrink: 0; font-size: 16px; line-height: 1; margin-top: 1px; }
+
+    .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+    .role-card { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 26px; border-top: 3px solid var(--sage-light); }
+    .role-card:nth-child(2) { border-top-color: var(--wheat); }
+    .role-card h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--sage-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .role-pill { font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: var(--sage-pale); color: var(--sage-dark); padding: 2px 9px; border-radius: 20px; }
+    .role-list { list-style: none; display: grid; gap: 8px; }
+    .role-list li { display: flex; gap: 9px; font-size: 13.5px; color: var(--text-mid); line-height: 1.5; }
+    .role-list li::before { content: '→'; color: var(--sage-light); flex-shrink: 0; }
+
+    /* RATES */
+    .rates-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 36px; }
+    .rate-card { background: var(--paper); border: 2px solid var(--border); border-radius: 14px; padding: 30px; }
+    .rate-card.featured { border-color: var(--sage-light); background: var(--sage-pale); }
+    .rate-card:not(.featured) { border-color: var(--wheat-light); background: var(--wheat-pale); }
+    .rate-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .rate-card.featured .rate-badge { background: var(--sage-dark); color: var(--wheat-pale); }
+    .rate-card:not(.featured) .rate-badge { background: var(--soil); color: var(--wheat-pale); }
+    .rate-amount { font-family: 'Lora', serif; font-size: 40px; font-weight: 700; color: var(--sage-dark); line-height: 1; margin-bottom: 6px; }
+    .rate-card:not(.featured) .rate-amount { color: var(--soil); }
+    .rate-label { font-size: 14px; font-weight: 600; color: var(--text-mid); margin-bottom: 10px; }
+    .rate-desc { font-size: 14px; color: var(--text-light); line-height: 1.65; }
+
+    /* ADVANCES TABS */
+    .tab-row { display: flex; gap: 8px; margin: 32px 0 24px; flex-wrap: wrap; }
+    .tab-btn { padding: 9px 22px; border-radius: 8px; border: 2px solid var(--border); background: transparent; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+    .tab-btn.active { background: var(--sage-dark); color: var(--paper); border-color: var(--sage-dark); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .formula-box { background: var(--sage-dark); color: var(--paper); border-radius: 12px; padding: 26px 30px; margin-bottom: 24px; }
+    .formula-text { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--wheat-light); line-height: 1.5; text-align: center; margin-bottom: 18px; }
+    .formula-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .formula-ex { background: rgba(255,253,248,0.07); border: 1px solid rgba(255,253,248,0.12); border-radius: 8px; padding: 14px 18px; font-size: 13.5px; color: rgba(255,253,248,0.85); line-height: 1.6; }
+    .formula-ex strong { color: var(--wheat-light); display: block; font-size: 14px; margin-bottom: 3px; }
+    .rules { display: grid; gap: 10px; }
+    .rule { display: flex; gap: 12px; background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; font-size: 14px; color: var(--text-mid); line-height: 1.5; align-items: flex-start; }
+    .rule span { flex-shrink: 0; }
+    .streams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
+    .stream-card { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 26px; border-top: 3px solid var(--sage-light); }
+    .stream-card:nth-child(2) { border-top-color: var(--wheat); }
+    .stream-card h4 { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--sage-dark); margin-bottom: 6px; }
+    .stream-dur { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 600; color: var(--wheat); margin-bottom: 10px; }
+    .stream-ex { font-size: 13px; color: var(--text-mid); background: var(--paper); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; line-height: 1.5; }
+    .stream-note { font-size: 12.5px; color: var(--text-light); font-style: italic; }
+
+    /* PREREQS */
+    .prereq-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
+    .prereq-card { background: var(--paper); border: 1px solid var(--border); border-radius: 10px; padding: 26px; border-top: 3px solid var(--sage-light); }
+    .prereq-card:nth-child(2) { border-top-color: var(--wheat); }
+    .prereq-card:nth-child(3) { border-top-color: var(--rust-light); }
+    .prereq-card:nth-child(4) { border-top-color: var(--sage); }
+    .prereq-card:nth-child(5) { border-top-color: var(--soil); }
+    .prereq-card:nth-child(6) { border-top-color: var(--wheat-light); background: var(--sage-pale); }
+    .prereq-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--sage-pale); display: flex; align-items: center; justify-content: center; color: var(--sage-dark); flex-shrink: 0; }
+    .prereq-icon svg { width: 22px; height: 22px; }
+    .prereq-card:nth-child(2) .prereq-icon { background: var(--wheat-pale); color: var(--soil); }
+    .prereq-card:nth-child(3) .prereq-icon { background: var(--rust-pale); color: var(--rust); }
+    .prereq-card:nth-child(4) .prereq-icon { background: var(--sage-pale); color: var(--sage-dark); }
+    .prereq-card:nth-child(5) .prereq-icon { background: var(--cream-dark); color: var(--soil); }
+    .prereq-card:nth-child(6) .prereq-icon { background: rgba(255,253,248,0.7); color: var(--sage-dark); }
+    .prereq-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--cream-dark); }
+    .prereq-card h4 { font-weight: 700; font-size: 14px; color: var(--sage-dark); margin-bottom: 0; }
+    .check-list { list-style: none; display: grid; gap: 8px; }
+    .check-list li { display: flex; gap: 8px; font-size: 13px; color: var(--text-mid); line-height: 1.45; }
+    .check-list li::before { content: '✓'; color: var(--sage); font-weight: 700; flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+
+    /* COMMODITIES */
+    .comm-head { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 40px; }
+    .comm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .comm-section { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 26px; border-top: 3px solid var(--sage-light); }
+    .comm-section:nth-child(2) { border-top-color: var(--wheat); }
+    .comm-section h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--sage-dark); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .comm-item { margin-bottom: 14px; }
+    .comm-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+    .comm-sub { font-size: 12.5px; color: var(--text-light); line-height: 1.5; padding-left: 10px; border-left: 2px solid var(--sage-pale); }
+
+    /* APPLY */
+    .apply-head { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 44px; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .step { background: rgba(255,253,248,0.05); border: 1px solid rgba(255,253,248,0.1); border-radius: 12px; padding: 26px 22px; transition: background 0.2s; }
+    .step:hover { background: rgba(255,253,248,0.08); }
+    .step-n { font-family: 'Caveat', cursive; font-size: 40px; font-weight: 600; color: var(--wheat); line-height: 1; margin-bottom: 14px; }
+    .step-t { font-weight: 700; font-size: 14.5px; color: var(--wheat-pale); margin-bottom: 9px; }
+    .step-d { font-size: 13px; line-height: 1.65; color: rgba(255,253,248,0.6); }
+    .apply-foot { margin-top: 36px; background: rgba(255,253,248,0.06); border: 1px solid rgba(255,253,248,0.1); border-radius: 12px; padding: 32px 38px; display: flex; justify-content: space-between; align-items: center; gap: 36px; flex-wrap: wrap; }
+    .apply-foot h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--paper); margin-bottom: 12px; }
+    .doc-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+    .doc-list li { background: rgba(255,253,248,0.07); border: 1px solid rgba(255,253,248,0.12); border-radius: 6px; padding: 5px 12px; font-size: 13px; color: rgba(255,253,248,0.7); }
+    .foot-cta p { font-size: 14px; color: rgba(255,253,248,0.6); margin-bottom: 14px; line-height: 1.6; text-align: right; }
+
+    /* FAQ */
+    .faq-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; }
+    .sticky { position: sticky; top: calc(var(--topbar) + 20px); }
+    .faq-list { display: grid; gap: 6px; }
+    .faq-item { background: var(--paper); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 14px; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); transition: background 0.15s; }
+    .faq-q:hover { background: var(--cream); }
+    .faq-arr { flex-shrink: 0; font-size: 18px; color: var(--sage-light); transition: transform 0.2s; }
+    .faq-item.open .faq-arr { transform: rotate(45deg); color: var(--sage-dark); }
+    .faq-a { display: none; padding: 14px 22px 18px; font-size: 14px; line-height: 1.75; color: var(--text-mid); border-top: 1px solid var(--cream-dark); }
+    .faq-item.open .faq-a { display: block; }
+
+    /* TEAM */
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 640px; margin-top: 36px; }
+    .team-card { background: var(--paper); border: 1px solid var(--border); border-radius: 14px; padding: 30px; display: flex; gap: 20px; align-items: flex-start; border-top: 3px solid var(--sage-light); }
+    .team-card:nth-child(2) { border-top-color: var(--wheat); }
+    .team-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--sage-pale); border: 2px solid var(--sage-light); display: flex; align-items: center; justify-content: center; font-family: 'Lora', serif; font-size: 20px; font-weight: 700; color: var(--sage-dark); flex-shrink: 0; }
+    .team-name { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--sage-dark); margin-bottom: 3px; }
+    .team-role { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); margin-bottom: 12px; }
+    .team-contact a { font-size: 13.5px; color: var(--sage-dark); text-decoration: none; display: block; line-height: 1.8; }
+    .team-contact a:hover { text-decoration: underline; }
+    .team-cta { margin-top: 44px; background: var(--sage-pale); border: 1px solid var(--sage-light); border-radius: 12px; padding: 30px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; max-width: 640px; }
+    .team-cta p { font-size: 15px; color: var(--text-mid); line-height: 1.6; }
+    .team-cta strong { display: block; font-family: 'Lora', serif; font-size: 17px; color: var(--sage-dark); margin-bottom: 4px; }
+
+    /* CONTACT */
+    .contact-grid { margin-top: 44px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; }
+    .c-info { background: var(--paper); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+    .c-info h3 { font-family: 'Lora', serif; font-size: 19px; font-weight: 700; color: var(--sage-dark); margin-bottom: 22px; }
+    .c-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 18px; }
+    .c-icon { width: 32px; height: 32px; flex-shrink: 0; background: var(--sage-pale); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .c-key { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); margin-bottom: 3px; }
+    .c-val { font-size: 14px; color: var(--text); line-height: 1.5; }
+    .c-val a { color: var(--sage-dark); text-decoration: none; }
+    .c-val a:hover { text-decoration: underline; }
+    .c-form { background: var(--paper); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+    .c-form h3 { font-family: 'Lora', serif; font-size: 19px; font-weight: 700; color: var(--sage-dark); margin-bottom: 22px; }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .f-group { margin-bottom: 12px; }
+    label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); margin-bottom: 5px; }
+    input, select, textarea { width: 100%; background: var(--cream); border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.2s; }
+    input::placeholder, textarea::placeholder { color: var(--text-light); }
+    input:focus, select:focus, textarea:focus { border-color: var(--sage-light); background: var(--paper); }
+    textarea { resize: vertical; min-height: 90px; }
+    .f-submit { margin-top: 4px; width: 100%; background: var(--sage-dark); color: var(--paper); border: none; border-radius: 8px; padding: 12px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+    .f-submit:hover { background: var(--sage); }
+    .f-note { margin-top: 9px; font-size: 12px; color: var(--text-light); text-align: center; }
+
+    .foot-aafc { display: flex; align-items: center; gap: 10px; }
+    .foot-aafc-logo { height: 80px; width: auto; display: block; filter: brightness(0) invert(1); opacity: 0.72; }
+    /* FOOTER */
+    footer { background: var(--sage-dark); padding: 32px 0; border-top: 3px solid var(--wheat); }
+    .foot-inner { max-width: 1140px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
+    .foot-brand { display: flex; align-items: center; gap: 12px; }
+    .foot-logo { height: 48px; width: auto; display: block; filter: brightness(0) invert(1); opacity: 0.85; }
+    .foot-txt { font-size: 13px; color: rgba(255,253,248,0.5); line-height: 1.5; }
+    .foot-txt strong { color: rgba(255,253,248,0.85); display: block; font-size: 14px; }
+    .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .foot-links a { font-size: 13px; color: rgba(255,253,248,0.5); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+    .foot-links a:hover { color: var(--wheat-light); }
+    .foot-bottom { max-width: 1140px; margin: 18px auto 0; padding: 18px 40px 0; border-top: 1px solid rgba(255,253,248,0.1); font-size: 12px; color: rgba(255,253,248,0.3); text-align: center; line-height: 1.6; }
+
+    /* ANIMATIONS */
+    .fu { opacity: 0; transform: translateY(18px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .fu.vis { opacity: 1; transform: none; }
+
+    /* HAMBURGER */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; background: none; border: none; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; }
+    .nav-hamburger:hover { background: var(--cream); }
+    .nav-hamburger span { display: block; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.25s; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE MENU */
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 149; opacity: 0; transition: opacity 0.25s; }
+    .mobile-overlay.active { opacity: 1; }
+    .mobile-menu { position: fixed; top: 0; right: -100%; bottom: 0; width: min(320px, 88vw); background: var(--paper); z-index: 150; box-shadow: -4px 0 32px rgba(0,0,0,0.15); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; overflow-y: auto; }
+    .mobile-menu.open { right: 0; }
+    .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--border); gap: 12px; }
+    .mobile-menu-close { width: 36px; height: 36px; border: none; background: var(--cream); border-radius: 8px; cursor: pointer; font-size: 18px; color: var(--text-mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .mobile-menu-close:hover { background: var(--cream-dark); }
+    .mobile-nav { display: flex; flex-direction: column; padding: 12px 0 32px; }
+    .mobile-nav .mnl { padding: 14px 24px; font-size: 15px; font-weight: 600; color: var(--text-mid); text-decoration: none; border-bottom: 1px solid var(--cream-dark); cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .mobile-nav .mnl:hover { background: var(--cream); color: var(--sage-dark); }
+    .mobile-nav .mobile-apply { margin: 20px 24px 0; background: var(--sage-dark); color: var(--wheat-pale) !important; border-radius: 8px; text-align: center; border-bottom: none; padding: 14px 24px; }
+    .mobile-nav .mobile-apply:hover { background: var(--sage); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav.main-nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .site-banner { padding: 10px 20px; }
+      .mobile-overlay { display: block; }
+      .hero-inner { padding: 36px 20px 32px; }
+      .hero-inner, .two-col, .comm-head, .faq-layout, .contact-grid, .steps,
+      .apply-head, .roles-grid, .rates-cards, .streams-grid, .comm-cols, .team-grid { grid-template-columns: 1fr; gap: 20px; }
+      .container { padding: 0 20px; }
+      .hero-nav-cards { padding: 0 20px 48px; grid-template-columns: 1fr 1fr; }
+      .prereq-grid { grid-template-columns: 1fr; }
+      .formula-examples { grid-template-columns: 1fr; }
+      .apply-foot { flex-direction: column; align-items: flex-start; }
+      .foot-cta p { text-align: left; }
+      .f-row { grid-template-columns: 1fr; }
+      .foot-inner { flex-direction: column; align-items: flex-start; }
+      .foot-aafc { order: 2; }
+      .foot-bottom, .foot-inner { padding-left: 20px; padding-right: 20px; }
+      .team-grid, .team-cta { max-width: 100%; }
+      .breadcrumb { padding: 10px 20px; }
+      .about-photo-banner { margin-left: -20px !important; margin-right: -20px !important; }
+      section { padding: 48px 0; }
+      .sticky { position: static; }
+      .faq-layout { gap: 32px; }
+    }
+    @media (max-width: 480px) {
+      .hero-nav-cards { grid-template-columns: 1fr; }
+      .hero-desc { font-size: 15px; }
+      .rate-amount { font-size: 32px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn-primary, .hero-actions .btn-outline { justify-content: center; }
+      .team-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<!-- MOBILE MENU -->
+<div aria-label="Navigation menu" class="mobile-menu" id="mobileMenu" role="dialog">
+<div class="mobile-menu-header">
+<div class="nav-text"><strong>Advance Payments Program</strong>administered by PEIFA</div>
+<button aria-label="Close menu" class="mobile-menu-close" id="mobileMenuClose">✕</button>
+</div>
+<nav class="mobile-nav">
+<a class="mnl" data-p="home">🏠 Home</a>
+<a class="mnl" data-p="about">About the Program</a>
+<a class="mnl" data-p="rates">Interest Rates</a>
+<a class="mnl" data-p="advances">Advance Calculations</a>
+<a class="mnl" data-p="commodities">Eligible Commodities</a>
+<a class="mnl" data-p="prereqs">Prerequisites</a>
+<a class="mnl" data-p="faq">FAQ</a>
+<a class="mnl" data-p="team">Our Team</a>
+<a class="mnl" data-p="contact">Contact Us</a>
+<a class="mnl mobile-apply" data-p="apply">Apply Now →</a>
+</nav>
+</div>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- FIXED NAV -->
+<nav class="main-nav">
+<div class="nav-logo" onclick="goTo('home')">
+<img alt="PEI Federation of Agriculture" class="nav-mark" src="peifa-logo.png"/>
+<div class="nav-text"><strong>Advance Payments Program</strong>administered by PEIFA</div>
+</div>
+<button aria-expanded="false" aria-label="Open menu" class="nav-hamburger" id="navHamburger">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links">
+<li><a class="nl" data-p="about">About</a></li>
+<li><a class="nl" data-p="rates">Rates</a></li>
+<li><a class="nl" data-p="advances">Advances</a></li>
+<li><a class="nl" data-p="commodities">Commodities</a></li>
+<li><a class="nl" data-p="prereqs">Prerequisites</a></li>
+<li><a class="nl" data-p="faq">FAQ</a></li>
+<li><a class="nl" data-p="team">Our Team</a></li>
+<li><a class="nl nav-cta" data-p="apply">Apply Now</a></li>
+</ul>
+</nav>
+<!-- PERSISTENT BANNER -->
+<div class="site-banner">
+<span class="banner-tag">Canada</span>
+  A federal program under the <strong style="color:rgba(255,253,248,0.9);margin:0 4px;">Agricultural Marketing Programs Act (AMPA)</strong> — administered by PEIFA in cooperation with Agriculture and Agri-Food Canada
+</div>
+<!-- HOME -->
+<div class="page" id="pg-home">
+<div class="page-body" style="background:var(--cream);">
+<div class="hero-inner" style="background: linear-gradient(rgba(250,246,239,0.88), rgba(250,246,239,0.88)), none center/cover no-repeat;">
+<div>
+<div class="hero-tag">Advance Payments Program</div>
+<h1>Farm operating loans for<br/><em>Island producers</em></h1>
+<p class="hero-desc">The Advance Payments Program gives PEI farmers access to interest-free and interest-advantaged operating loans secured against their commodities — so you can sell when the time is right, not when the bills are due.</p>
+<div class="hero-actions">
+<a class="btn-primary" onclick="goTo('apply')">Apply for an Advance →</a>
+<a class="btn-outline" onclick="goTo('about')">Learn More</a>
+</div>
+</div>
+<div class="hero-aside">
+<div class="aside-label">Program at a glance</div>
+<div class="stat-row">
+<div class="stat-block hi">
+<div class="stat-num">0%</div>
+<div><div class="stat-title">Interest-free</div><div class="stat-sub">Full advance under $250,000 carries zero interest</div></div>
+</div>
+<div class="stat-block amber">
+<div class="stat-num">P − 0.75%</div>
+<div><div class="stat-title">Interest-advantaged</div><div class="stat-sub">Prime minus 0.75% on advances of $250,000+</div></div>
+</div>
+<div class="stat-block earthy">
+<div class="stat-num">AAFC</div>
+<div><div class="stat-title">Federal partner</div><div class="stat-sub">Backed by Agriculture and Agri-Food Canada</div></div>
+</div>
+</div>
+<div class="aside-note">⚠️ Administrative and security document fees apply — ranging from <strong>$675 to $1,875</strong>.</div>
+</div>
+</div>
+<div class="hero-nav-cards">
+<div class="hn-card" onclick="goTo('about')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></div><div class="hn-title">About the Program</div><div class="hn-desc">How the APP works, who's involved, and what it covers.</div></div>
+<div class="hn-card" onclick="goTo('rates')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><line x1="19" x2="5" y1="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg></div><div class="hn-title">Interest Rates</div><div class="hn-desc">0% under $250K · Prime − 0.75% above.</div></div>
+<div class="hn-card" onclick="goTo('advances')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01M12 9h.01M12 15h.01"></path></svg></div><div class="hn-title">Advance Calculations</div><div class="hn-desc">How your advance is calculated for crops and livestock.</div></div>
+<div class="hn-card" onclick="goTo('commodities')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 2a9 9 0 0 1 9 9c0 4.5-4 8-9 11C7 20 3 16.5 3 11a9 9 0 0 1 9-9z"></path><path d="M12 6v6l4 2"></path></svg></div><div class="hn-title">Eligible Commodities</div><div class="hn-desc">Hogs, lambs, beef, potatoes, grains, berries, and more.</div></div>
+<div class="hn-card" onclick="goTo('prereqs')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" x2="15" y1="13" y2="13"></line><line x1="9" x2="12" y1="17" y2="17"></line></svg></div><div class="hn-title">Prerequisites</div><div class="hn-desc">Documents, insurance, and requirements to get started.</div></div>
+<div class="hn-card" onclick="goTo('faq')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line><circle cx="12" cy="12" r="10"></circle></svg></div><div class="hn-title">FAQ</div><div class="hn-desc">Common questions answered by our program officers.</div></div>
+<div class="hn-card" onclick="goTo('team')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div><div class="hn-title">Our Team</div><div class="hn-desc">Meet Paul King and Andrew Wood, your dedicated APP officers.</div></div>
+<div class="hn-card" onclick="goTo('apply')"><div class="hn-icon" style="width:32px;height:32px;color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="hn-title">How to Apply</div><div class="hn-desc">Four steps to receiving your advance. Start here.</div></div>
+</div>
+<div style="width:100%; height:320px; background: none center 60%/cover no-repeat; position:relative;">
+<div style="position:absolute; inset:0; background: linear-gradient(to right, rgba(61,86,64,0.55) 0%, rgba(61,86,64,0.2) 60%, transparent 100%);"></div>
+<div style="position:absolute; bottom:36px; left:40px; color:var(--wheat-pale);">
+<div style="font-family:'Caveat',cursive; font-size:22px; font-weight:600; opacity:0.9; margin-bottom:4px;">Prince Edward Island</div>
+<div style="font-family:'Lora',serif; font-size:28px; font-weight:700; line-height:1.2; text-shadow:0 2px 8px rgba(0,0,0,0.3);">Working land,<br/>supported by the program.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ABOUT -->
+<div class="page" id="pg-about">
+<div class="page-body" style="background:var(--paper);">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>About the Program</div>
+<section style="background:var(--paper); border-top:1px solid var(--border);">
+<div class="container">
+<div class="two-col">
+<div class="fu">
+<div class="eyebrow">About the Program</div>
+<h2>Farm operating loans, backed by government</h2>
+<div class="about-body">
+<p>The Advance Payments Program is a <strong>federal loan guarantee program</strong> which provides agricultural producers with access to low-cost cash advances that can help cover operating expenses and provide for potentially favourable marketing opportunities.</p>
+<p>The program is offered under the <em>Agricultural Marketing Programs Act</em>, managed by Agriculture &amp; Agri-Food Canada and administered by PEIFA. Program costs and rates are favourable for participating producers, and support is provided throughout the process.</p>
+<p>Advances and repayments are processed electronically through PEIFA, which works directly with AAFC on your behalf.</p>
+<p style="margin-top:20px; padding:16px 20px; background:var(--sage-pale); border-left:3px solid var(--sage); border-radius:4px; font-size:15px;">Apply today by speaking to a PEIFA APP Program Officer at <strong><a href="tel:+19023687289" style="color:var(--sage-dark); white-space:nowrap;">902-368-7289</a></strong></p>
+</div>
+</div>
+<div class="fu">
+<div class="feat"><div class="feat-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><line x1="19" x2="5" y1="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg></div><div><div class="feat-title">Zero Interest Under $250,000</div><div class="feat-desc">Your full advance is interest-free — you borrow and repay the exact same amount.</div></div></div>
+<div class="feat"><div class="feat-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div><div class="feat-title">Interest-Advantaged Above $250,000</div><div class="feat-desc">Larger advances are charged at Prime minus 0.75% — still well below standard commercial lending rates.</div></div></div>
+<div class="feat"><div class="feat-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div><div><div class="feat-title">Secured Against Your Commodity</div><div class="feat-desc">Advances are secured against your crop or livestock — not your land, buildings, or equipment.</div></div></div>
+<div class="feat"><div class="feat-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg></div><div><div class="feat-title">Electronic Processing</div><div class="feat-desc">Advances and repayments are handled electronically through PEIFA for fast, convenient access.</div></div></div>
+<div class="feat"><div class="feat-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg></div><div><div class="feat-title">On-Farm Inspections</div><div class="feat-desc">PEIFA conducts commodity inspections at your farm to support the application and verify inventory.</div></div></div>
+</div>
+</div>
+<div class="about-photo-banner" style="margin: 48px -40px; height: 260px; background: none center 40%/cover no-repeat; border-radius:0; position:relative; overflow:hidden;">
+<div style="position:absolute; inset:0; background: linear-gradient(rgba(61,86,64,0.45), rgba(61,86,64,0.45));"></div>
+<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+<div style="text-align:center; color:var(--wheat-pale);">
+<div style="font-family:'Caveat',cursive; font-size:20px; opacity:0.85; margin-bottom:6px;">Working together</div>
+<div style="font-family:'Lora',serif; font-size:26px; font-weight:700; text-shadow:0 2px 8px rgba(0,0,0,0.3);">PEIFA and AAFC — in your corner</div>
+</div>
+</div>
+</div>
+<div class="roles-grid fu">
+<div class="role-card">
+<h3>PEIFA <span class="role-pill">Your Local Administrator</span></h3>
+<ul class="role-list">
+<li>Qualifying and processing applications</li>
+<li>Liaising with financial institutions and creditors</li>
+<li>Conducting on-farm commodity inspections</li>
+<li>Processing electronic advances and repayments</li>
+<li>Maintaining the working relationship with AAFC</li>
+</ul>
+</div>
+<div class="role-card">
+<h3>AAFC <span class="role-pill">Federal Partner</span></h3>
+<ul class="role-list">
+<li>Partnership agreement under AMPA</li>
+<li>Program partnership: AAFC + PEIFA</li>
+<li>File auditing and program reconciliation</li>
+<li>Program administration assessment</li>
+<li>Subsidizing interest costs for eligible producers</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- RATES -->
+<div class="page" id="pg-rates">
+<div class="page-body">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Interest Rates</div>
+<section style="background:var(--cream); border-top:1px solid var(--border);">
+<div class="container">
+<div class="fu">
+<div class="eyebrow">Interest Rates</div>
+<h2>Competitive rates for every operation</h2>
+<p class="lead">APP advances are structured in two tiers based on total advance amount.</p>
+</div>
+<div class="rates-cards fu">
+<div class="rate-card featured">
+<div class="rate-badge">Under $250,000</div>
+<div class="rate-amount">0%</div>
+<div class="rate-label">Interest-Free</div>
+<div class="rate-desc">The federal government covers all interest on advances below $250,000. You receive your advance and repay exactly the same amount — no interest charges at all.</div>
+</div>
+<div class="rate-card">
+<div class="rate-badge">$250,000 and Over</div>
+<div class="rate-amount">Prime − 0.75%</div>
+<div class="rate-label">Interest-Advantaged</div>
+<div class="rate-desc">Advances at or above $250,000 are charged at prime minus 0.75% — significantly below standard commercial financing and a major advantage for larger operations.</div>
+</div>
+</div>
+<div class="warn fu"><strong class="warn-label">Note:</strong> <strong>Administrative and security document fees apply to all advances</strong>, ranging from $675 to $1,875 depending on the advance amount and complexity. Contact PEIFA for a full breakdown before applying.</div>
+</div>
+</section>
+</div>
+</div>
+<!-- ADVANCES -->
+<div class="page" id="pg-advances">
+<div class="page-body" style="background:var(--paper);">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Advance Calculations</div>
+<section style="background:var(--paper); border-top:1px solid var(--border);">
+<div class="container">
+<div class="fu">
+<div class="eyebrow">Advance Calculations</div>
+<h2>How your advance amount is determined</h2>
+<p class="lead">Advance amounts are calculated using a standard formula based on your commodity type. Select a tab to see the details.</p>
+</div>
+<div class="tab-row fu">
+<button class="tab-btn active" onclick="switchTab(this,'crops')">Crop Advances</button>
+<button class="tab-btn" onclick="switchTab(this,'livestock')">Livestock Advances</button>
+<button class="tab-btn" onclick="switchTab(this,'beef')">Beef Cattle Streams</button>
+</div>
+<div class="tab-panel active fu" id="tab-crops">
+<div class="formula-box">
+<div class="formula-text">Acreage × Guaranteed Insured Yield × Advance Rate = $ Advance Amount</div>
+<div class="formula-examples">
+<div class="formula-ex"><strong>Barley example</strong>300 acres × 0.998 × $145.50/MT ≈ $43,563</div>
+<div class="formula-ex"><strong>Table Potatoes example</strong>100 acres × 270.0% × $3.88/CWT ≈ $104,760</div>
+</div>
+</div>
+<div class="rules">
+<div class="rule"><span class="rule-bullet">—</span>Audited inventory calculations required by January 31st each year</div>
+<div class="rule"><span class="rule-bullet">—</span>Sales invoices required upon repayment after January 31st</div>
+<div class="rule"><span class="rule-bullet">—</span>Crop insurance cheques are delivered to PEIFA up to the amount advanced</div>
+<div class="rule"><span class="rule-bullet">—</span>A 1% penalty applies for repayments made without proof of sale (POS)</div>
+<div class="rule"><span class="rule-bullet">—</span>Latest date to repay is September 30th</div>
+<div class="rule"><span class="rule-bullet">—</span>Default after September 30th incurs a 2% penalty rate, retroactive to day one</div>
+</div>
+</div>
+<div class="tab-panel fu" id="tab-livestock">
+<div class="formula-box">
+<div class="formula-text">Number of Head × $ Advance Rate = $ Advance Amount</div>
+<div class="formula-examples">
+<div class="formula-ex"><strong>Beef Cattle example</strong>50 head (1,250+ lbs) × $1,500/head ≈ $75,000</div>
+<div class="formula-ex"><strong>Lambs example</strong>300 head (110+ lbs) × $145/head ≈ $43,500</div>
+</div>
+</div>
+<div class="rules">
+<div class="rule"><span class="rule-bullet">—</span>Livestock inspections are completed at the time of signing the application</div>
+<div class="rule"><span class="rule-bullet">—</span>Advance rates are based on the anticipated future sales weight of the animal</div>
+<div class="rule"><span class="rule-bullet">—</span>Sales invoices are required upon every repayment</div>
+<div class="rule"><span class="rule-bullet">—</span>Producer must have 100% ownership of all livestock in the advance</div>
+<div class="rule"><span class="rule-bullet">—</span>Custom feeding for another producer is not permitted</div>
+<div class="rule"><span class="rule-bullet">—</span>Hogs and lambs are continuous-flow advances only</div>
+</div>
+</div>
+<div class="tab-panel fu" id="tab-beef">
+<div class="streams-grid">
+<div class="stream-card">
+<h4>Standard Flow</h4>
+<div class="stream-dur">Up to 24 months</div>
+<div class="stream-ex">May 2026 advance → due March 31, 2028<br/>May 2027 advance → due March 31, 2029</div>
+<div class="stream-note">For cow/calf operations — repayments made on an ongoing basis as animals are sold</div>
+</div>
+<div class="stream-card">
+<h4>Continuous Flow</h4>
+<div class="stream-dur">Up to 16 months</div>
+<div class="stream-ex">May 2026 advance → due September 30, 2027</div>
+<div class="stream-note">For feeder cattle (heavies) — repayments made at end of the advance year</div>
+</div>
+</div>
+<div class="rules">
+<div class="rule"><span class="rule-bullet">—</span>Beef cattle advance rates vary by weight class: 400–700 lbs · 700–900 lbs · under 1,250 lbs · over 1,250 lbs</div>
+<div class="rule"><span class="rule-bullet">—</span>PEIFA can work with FCC to arrange a first-priority split of cow and calf operations, allowing producers to benefit from both programs simultaneously</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- PREREQUISITES -->
+<div class="page" id="pg-prereqs">
+<div class="page-body">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Prerequisites</div>
+<section style="background:var(--cream); border-top:1px solid var(--border);">
+<div class="container">
+<div class="fu">
+<div class="eyebrow">Program Prerequisites</div>
+<h2>What you'll need to apply</h2>
+<p class="lead">Most agricultural products are eligible for an APP advance. However, <strong>supply-managed livestock</strong> and <strong>breeding animals not intended for market</strong> during the production period are not eligible. For full details, visit Agriculture and Agri-Food Canada's website or speak to an APP Program Officer.</p>
+</div>
+<div class="prereq-grid fu">
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Financial Records</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" x2="15" y1="13" y2="13"></line><line x1="9" x2="12" y1="17" y2="17"></line></svg></div>
+</div>
+<ul class="check-list">
+<li>Two years of audited farm income and expenses</li>
+<li>One year of sales and purchasing invoices</li>
+<li>Declaration of registered ownership</li>
+<li>Provincial business license</li>
+</ul>
+</div>
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Credit &amp; Banking</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="5"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg></div>
+</div>
+<ul class="check-list">
+<li>Equifax credit check</li>
+<li>PPRS creditor check</li>
+<li>Financial institution priority agreement</li>
+<li>Bank, Credit Union, FCC, FPEI, or ACL</li>
+</ul>
+</div>
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Insurance Coverage</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+</div>
+<ul class="check-list">
+<li>Registered and maintained crop insurance</li>
+<li>AgriStability coverage for livestock</li>
+<li>Commodity storage insurance coverage</li>
+</ul>
+</div>
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Inventory Documentation</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><path d="M8 21h8M12 17v4"></path><path d="M6 8h.01M9 8h6M6 11h12"></path></svg></div>
+</div>
+<ul class="check-list">
+<li>Maintained herd inventory records</li>
+<li>Audited on-site inventory</li>
+<li>AIC — Audited Storage Inventory</li>
+</ul>
+</div>
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Livestock-Specific</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 9l4-4 4 4 4-4 4 4"></path><path d="M3 15l4-4 4 4 4-4 4 4"></path></svg></div>
+</div>
+<ul class="check-list">
+<li>Livestock inventory inspection at application</li>
+<li>100% producer ownership of livestock</li>
+<li>Relatedness review where applicable</li>
+</ul>
+</div>
+<div class="prereq-card">
+<div class="prereq-card-header">
+<h4>Need Help Getting Started?</h4>
+<div class="prereq-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+</div>
+<ul class="check-list">
+<li>Call PEIFA — a program officer will guide you through everything</li>
+<li>On-farm visits available for commodity inspections</li>
+<li>We can help coordinate with your financial institution</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- COMMODITIES -->
+<div class="page" id="pg-commodities">
+<div class="page-body" style="background:var(--paper);">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Eligible Commodities</div>
+<section style="background:var(--paper); border-top:1px solid var(--border);">
+<div class="container">
+<div class="comm-head fu">
+<div><div class="eyebrow">Eligible Commodities</div><h2>What products qualify?</h2></div>
+<p class="lead">Most agricultural products are eligible. Supply-managed livestock and breeding animals not intended for market are excluded. Contact PEIFA to confirm eligibility and advance rates for your specific commodity.</p>
+</div>
+<div class="comm-cols fu">
+<div class="comm-section">
+<h3>Livestock</h3>
+<div class="comm-item"><div class="comm-name">Hogs — Continuous flow</div><div class="comm-sub">Weanlings · Feeders · Markets</div></div>
+<div class="comm-item"><div class="comm-name">Lambs — Continuous flow</div><div class="comm-sub">80–109 lbs · 110 lbs and over</div></div>
+<div class="comm-item"><div class="comm-name">Beef Cattle</div><div class="comm-sub">Standard cycle (cow/calf) or continuous cycle (heavies)<br/>Weight classes: 400–700 lbs · 700–900 lbs · under 1,250 lbs · over 1,250 lbs</div></div>
+</div>
+<div class="comm-section">
+<h3>Crops &amp; Other</h3>
+<div class="comm-item"><div class="comm-name">Grains, Cereals, Pulses &amp; Oil Seeds</div><div class="comm-sub">Wheat, barley, oats, canola, soybeans, and more</div></div>
+<div class="comm-item"><div class="comm-name">Root Vegetables</div><div class="comm-sub">Potatoes (table, seed, processing), rutabaga, carrots, and others</div></div>
+<div class="comm-item"><div class="comm-name">Fresh &amp; Storable Vegetables</div><div class="comm-sub">A wide range of market vegetables</div></div>
+<div class="comm-item"><div class="comm-name">Fruits &amp; Berries — Fresh &amp; Storable</div><div class="comm-sub">Strawberries, blueberries, and other local fruits</div></div>
+<div class="comm-item"><div class="comm-name">Turf Grass</div><div class="comm-sub">Sod and turf production operations</div></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- APPLY -->
+<div class="page" id="pg-apply">
+<div class="page-body">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>How to Apply</div>
+<section style="background: none center 40%/cover no-repeat; padding-top:60px; position:relative;">
+<div class="container">
+<div style="position:absolute; inset:0; background: linear-gradient(rgba(30,50,32,0.82), rgba(30,50,32,0.82));"></div>
+<div style="position:relative; z-index:1;">
+<div class="apply-head fu">
+<div>
+<div class="eyebrow" style="color:var(--wheat-light);">How to Apply</div>
+<h2 style="color:var(--paper);">Four steps to your advance</h2>
+</div>
+<p class="lead" style="color:rgba(255,253,248,0.72);">Straightforward process. Our program officers Paul and Andrew are available every step of the way.</p>
+</div>
+<div class="steps fu">
+<div class="step"><div class="step-n">01</div><div class="step-t">Contact PEIFA</div><div class="step-d">Reach out to Paul King or Andrew Wood. They'll confirm your eligibility, explain requirements, and arrange a commodity inspection if needed.</div></div>
+<div class="step"><div class="step-n">02</div><div class="step-t">Gather Documents</div><div class="step-d">Prepare your financial records, proof of ownership, insurance documents, and inventory records. Our team guides you through exactly what's needed.</div></div>
+<div class="step"><div class="step-n">03</div><div class="step-t">PEIFA Qualifies &amp; Submits</div><div class="step-d">PEIFA reviews your application, completes required checks, and submits your qualified file to AAFC under the program partnership agreement.</div></div>
+<div class="step"><div class="step-n">04</div><div class="step-t">Receive Funds &amp; Repay</div><div class="step-d">Funds are deposited electronically. Repay with sales invoices when you sell your product, within your applicable repayment deadline.</div></div>
+</div>
+<div class="apply-foot fu">
+<div>
+<h3>Key documents to prepare</h3>
+<ul class="doc-list">
+<li>2 years audited farm income &amp; expenses</li>
+<li>1 year of sales &amp; purchasing invoices</li>
+<li>Declaration of registered ownership</li>
+<li>Provincial business license</li>
+<li>Crop insurance or AgriStability documentation</li>
+<li>Herd inventory records (livestock)</li>
+<li>Financial institution priority agreement</li>
+</ul>
+</div>
+<div class="foot-cta">
+<p>Ready to get started?<br/>Contact a program officer today.</p>
+<a class="btn-wheat" onclick="goTo('contact')">Get in Touch →</a>
+</div>
+</div>
+</div>
+</div></section>
+</div>
+</div>
+<!-- FAQ -->
+<div class="page" id="pg-faq">
+<div class="page-body">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>FAQ</div>
+<section style="background:var(--cream); border-top:1px solid var(--border);">
+<div class="container">
+<div class="faq-layout">
+<div class="sticky fu">
+<div class="eyebrow">FAQ</div>
+<h2>Common questions</h2>
+<p class="lead">Have more questions? Give Paul or Andrew a call — they know this program inside and out.</p>
+<br/>
+<a class="btn-primary" onclick="goTo('team')" style="font-size:14px; padding:11px 22px;">Meet the Team →</a>
+</div>
+<div class="faq-list fu">
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">Is the full advance interest-free? <span class="faq-arr">+</span></button><div class="faq-a">Yes — advances <strong>under $250,000 are completely interest-free at 0%</strong>. The federal government covers all interest costs. For advances of $250,000 and over, the rate is Prime minus 0.75%, which is still significantly below standard commercial rates.</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">Are there any fees beyond interest? <span class="faq-arr">+</span></button><div class="faq-a">Yes. Administrative and security document fees apply to all advances, ranging from <strong>$675 to $1,875</strong>. Contact PEIFA for a precise estimate before you apply.</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">How is my advance amount calculated? <span class="faq-arr">+</span></button><div class="faq-a">For crops: <em>Acreage × Guaranteed Insured Yield × Advance Rate</em>. For livestock: <em>Number of Head × $ Advance Rate</em>. Rates are set based on commodity values and anticipated sale weights. PEIFA calculates your specific amount during the application.</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">When is the repayment deadline? <span class="faq-arr">+</span></button><div class="faq-a">For crop advances, the latest repayment date is <strong>September 30th</strong>. After January 31st, sales invoices are required. A 1% penalty applies without proof of sale. Defaults after September 30th are charged 2% retroactive to day one. Beef cattle have longer windows — up to 24 months (standard) or 16 months (continuous flow).</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">What's the difference between Standard and Continuous beef cattle streams? <span class="faq-arr">+</span></button><div class="faq-a">Standard flow applies to cow/calf operations with up to 24 months to repay. Continuous flow is for feeder cattle (heavies) with up to 16 months. PEIFA can work with FCC to arrange a priority split on cow and calf operations so producers can access both programs.</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">Do I need crop insurance to qualify? <span class="faq-arr">+</span></button><div class="faq-a">Yes. Registered and maintained crop insurance is required for crop advances. AgriStability coverage is required for livestock. Commodity storage insurance is also a prerequisite.</div></div>
+<div class="faq-item"><button class="faq-q" onclick="tFaq(this)">Are there alternatives if I don't qualify? <span class="faq-arr">+</span></button><div class="faq-a">Yes — PEIFA can point you toward FPEI's Beef Cattle Breeding Program and Heifer Retention Program, FCC for farm and herd purchasing, and Active Community Lending. Give us a call and we'll help you find the best fit.</div></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- TEAM -->
+<div class="page" id="pg-team">
+<div class="page-body" style="background:var(--paper);">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Our Team</div>
+<section style="background:var(--paper); border-top:1px solid var(--border);">
+<div class="container">
+<div class="fu">
+<div class="eyebrow">Your Program Officers</div>
+<h2>Talk to someone who knows the program</h2>
+<p class="lead">Paul and Andrew are PEIFA's dedicated APP program officers. Reach out to either of them to start your application, ask questions, or arrange a farm visit.</p>
+</div>
+<div class="team-grid fu">
+<div class="team-card">
+<div class="team-avatar">PK</div>
+<div>
+<div class="team-name">Paul King</div>
+<div class="team-role">APP Program Officer</div>
+<div class="team-contact">
+<a href="tel:+19023687289">Tel: (902) 368-7289</a>
+<a href="mailto:paulking@peifa.ca">Email: paulking@peifa.ca</a>
+</div>
+</div>
+</div>
+<div class="team-card">
+<div class="team-avatar">AW</div>
+<div>
+<div class="team-name">Andrew Wood</div>
+<div class="team-role">APP Program Officer</div>
+<div class="team-contact">
+<a href="tel:+19023687289">Tel: (902) 368-7289</a>
+<a href="mailto:awood@peifa.ca">Email: awood@peifa.ca</a>
+</div>
+</div>
+</div>
+</div>
+<div class="team-cta fu">
+<div>
+<strong>Ready to get started?</strong>
+<p>Paul and Andrew are available Monday–Friday, 8:00 AM – 4:00 PM.<br/>Give us a call or send a message and we'll be in touch promptly.</p>
+</div>
+<a class="btn-primary" onclick="goTo('contact')">Send a Message →</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- CONTACT -->
+<div class="page" id="pg-contact">
+<div class="page-body">
+<div class="breadcrumb"><a onclick="goTo('home')">Home</a><span>›</span>Contact Us</div>
+<section style="background:var(--cream); border-top:1px solid var(--border);">
+<div class="container">
+<div class="fu"><div class="eyebrow">Contact Us</div><h2>Get in touch</h2></div>
+<div class="contact-grid">
+<div class="c-info fu">
+<h3>PEI Federation of Agriculture</h3>
+<div class="c-row"><div class="c-icon" style="color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div><div><div class="c-key">Address</div><div class="c-val">159 Sherwood Rd #100<br/>Charlottetown, PE  C1E 0E5</div></div></div>
+<div class="c-row"><div class="c-icon" style="color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 9.8 19.79 19.79 0 0 1 1 1.18 2 2 0 0 1 2.96 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"></path></svg></div><div><div class="c-key">Phone</div><div class="c-val"><a href="tel:+19023687289">(902) 368-7289</a></div></div></div>
+<div class="c-row"><div class="c-icon" style="color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div><div><div class="c-key">Email</div><div class="c-val"><a href="mailto:info@peifa.ca">info@peifa.ca</a></div></div></div>
+<div class="c-row"><div class="c-icon" style="color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div><div class="c-key">Office Hours</div><div class="c-val">Monday – Friday<br/>8:00 AM – 4:00 PM</div></div></div>
+<div class="c-row"><div class="c-icon" style="color:var(--sage);"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><div><div class="c-key">Website</div><div class="c-val"><a href="https://www.peiapp.ca" target="_blank">www.peiapp.ca</a></div></div></div>
+<div class="aside-note" style="margin-top:20px;">Ask for <strong>Paul King</strong> or <strong>Andrew Wood</strong> — our dedicated APP program officers. <a onclick="goTo('team')" style="color:var(--soil); cursor:pointer; text-decoration:underline;">Meet the team →</a></div>
+</div>
+<div class="c-form fu">
+<h3>Send us a message</h3>
+<div class="f-row">
+<div class="f-group"><label>First Name</label><input placeholder="Jane" type="text"/></div>
+<div class="f-group"><label>Last Name</label><input placeholder="MacDonald" type="text"/></div>
+</div>
+<div class="f-group"><label>Email Address</label><input placeholder="jane@farmexample.ca" type="email"/></div>
+<div class="f-group"><label>Phone Number</label><input placeholder="(902) 555-0100" type="tel"/></div>
+<div class="f-group">
+<label>Primary Commodity</label>
+<select>
+<option disabled="" selected="" value="">Select your main commodity...</option>
+<option>Potatoes</option><option>Grains / Cereals / Pulses / Oil Seeds</option>
+<option>Beef Cattle</option><option>Hogs</option><option>Lambs</option>
+<option>Root Vegetables</option><option>Fresh / Storable Vegetables</option>
+<option>Fruit / Berries</option><option>Turf Grass</option><option>Other</option>
+</select>
+</div>
+<div class="f-group"><label>Message / Questions</label><textarea placeholder="Tell us about your operation or any questions about the APP..."></textarea></div>
+<button class="f-submit" onclick="handleSub(this)">Send Message</button>
+<p class="f-note">Your information is handled in accordance with federal privacy legislation.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- FOOTER -->
+<footer>
+<div class="foot-inner">
+<div class="foot-brand">
+
+<div class="foot-txt"><strong>PEI Federation of Agriculture</strong>Serving Island Farmers Since 1941</div>
+</div>
+<div class="foot-aafc">
+<img alt="Agriculture and Agri-Food Canada" class="foot-aafc-logo" src="data:image/webp;base64,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"/>
+</div>
+<div class="foot-links">
+<a onclick="goTo('about')">About</a>
+<a onclick="goTo('rates')">Rates</a>
+<a onclick="goTo('advances')">Advances</a>
+<a onclick="goTo('commodities')">Commodities</a>
+<a onclick="goTo('prereqs')">Prerequisites</a>
+<a onclick="goTo('faq')">FAQ</a>
+<a onclick="goTo('team')">Our Team</a>
+<a onclick="goTo('apply')">Apply</a>
+<a onclick="goTo('contact')">Contact</a>
+<a href="https://www.peifa.ca" target="_blank">PEIFA.ca ↗</a>
+</div>
+</div>
+<div class="foot-bottom">
+    The Advance Payments Program is a federal initiative administered under the <em>Agricultural Marketing Programs Act (AMPA)</em> through a cooperation agreement with Agriculture and Agri-Food Canada (AAFC). Delivered on PEI by the PEI Federation of Agriculture.<br/>
+    © 2025 PEI Federation of Agriculture. All rights reserved.
+  </div>
+</footer>
+<script>
+  // ── Dynamic topbar height (fixes banner-wrap overlap) ──
+  function setTopbar() {
+    var nav = document.querySelector('nav.main-nav');
+    var banner = document.querySelector('.site-banner');
+    if (nav && banner) {
+      var h = nav.offsetHeight + banner.offsetHeight;
+      document.documentElement.style.setProperty('--topbar', h + 'px');
+    }
+  }
+  setTopbar();
+  window.addEventListener('resize', setTopbar);
+
+  var PAGES = ['home','about','rates','advances','prereqs','commodities','apply','faq','team','contact'];
+  var TITLES = {
+    home:'Advance Payments Program — peiapp.ca', about:'About the Program — peiapp.ca',
+    rates:'Interest Rates — peiapp.ca', advances:'Advance Calculations — peiapp.ca',
+    prereqs:'Program Prerequisites — peiapp.ca', commodities:'Eligible Commodities — peiapp.ca',
+    apply:'How to Apply — peiapp.ca', faq:'FAQ — peiapp.ca',
+    team:'Our Team — peiapp.ca', contact:'Contact Us — peiapp.ca'
+  };
+
+  function goTo(p) {
+    if (PAGES.indexOf(p) === -1) p = 'home';
+    PAGES.forEach(function(id) {
+      var el = document.getElementById('pg-' + id);
+      if (el) el.style.display = 'none';
+    });
+    var target = document.getElementById('pg-' + p);
+    if (target) {
+      target.style.display = 'block';
+      window.scrollTo(0, 0);
+      target.querySelectorAll('.fu').forEach(function(el, i) {
+        el.classList.remove('vis');
+        setTimeout(function(){ el.classList.add('vis'); }, 60 + i * 65);
+      });
+    }
+    document.querySelectorAll('.nl').forEach(function(a) {
+      a.classList.toggle('nav-active', a.getAttribute('data-p') === p);
+    });
+    document.getElementById('doc-title').textContent = TITLES[p] || TITLES.home;
+    try { history.pushState({p:p}, '', '#'+p); } catch(e){}
+    setTimeout(setTopbar, 50);
+  }
+
+  document.querySelectorAll('.nl').forEach(function(a) {
+    a.addEventListener('click', function(e){ e.preventDefault(); goTo(a.getAttribute('data-p')); });
+  });
+
+  window.addEventListener('popstate', function(e) {
+    goTo((e.state && e.state.p) || location.hash.replace('#','') || 'home');
+  });
+
+  PAGES.forEach(function(id) {
+    var el = document.getElementById('pg-' + id);
+    if (el) el.style.display = 'none';
+  });
+  goTo(location.hash.replace('#','') || 'home');
+
+  var hamburger = document.getElementById('navHamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileOverlay = document.getElementById('mobileOverlay');
+
+  function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    mobileOverlay.classList.add('active');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    mobileOverlay.classList.remove('active');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', function() {
+    mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+  });
+  document.getElementById('mobileMenuClose').addEventListener('click', closeMobileMenu);
+  mobileOverlay.addEventListener('click', closeMobileMenu);
+
+  document.querySelectorAll('.mnl').forEach(function(a) {
+    a.addEventListener('click', function() {
+      goTo(a.getAttribute('data-p'));
+      closeMobileMenu();
+    });
+  });
+
+  function tFaq(btn) {
+    var item = btn.closest('.faq-item'), isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
+  }
+  function handleSub(btn) {
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = 'var(--sage)';
+    btn.disabled = true;
+  }
+  function switchTab(btn, panel) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    var el = document.getElementById('tab-' + panel);
+    if (el) el.classList.add('active');
+  }
+</script>
+</body>
+</html>
